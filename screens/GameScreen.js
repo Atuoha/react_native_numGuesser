@@ -19,12 +19,18 @@ const GameScreen = (props) => {
     generateRandomNumber(1, 100, props.userChoice)
   );
 
+  const [rounds, setRounds] = useState(0);
+
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
 
-  const startOver = () => {
-    props.onGameOver();
-  };
+  const { userChoice, onGameOver } = props // object destructuring
+  useEffect(() => {
+    if (currentGuess === userChoice) {
+      //    Alert.alert({title: 'Game Over!', message: 'The game is over'}, [{title: 'Game Over', style: 'click'}])
+      onGameOver(rounds);
+    }
+  }, [currentGuess, userChoice, onGameOver]);
 
   const nextGuessHandler = (direction) => {
     if (direction === "lower" && props.userChoice > currentGuess) {
@@ -33,7 +39,7 @@ const GameScreen = (props) => {
           title: "Opps!",
           message: `${props.userChoice} is certainly greater than ${currentGuess}`,
         },
-        [{ title: "Retry", style: "cancel" }]
+        [{ title: "Retry!", style: "cancel" }]
       );
       console.log(
         `${props.userChoice} is certainly greater than ${currentGuess}`
@@ -46,7 +52,7 @@ const GameScreen = (props) => {
           title: "Opps!",
           message: `${props.userChoice} is certainly lower than ${currentGuess}`,
         },
-        [{ title: "Retry", style: "cancel" }]
+        [{ title: "Retry!", style: "cancel" }]
       );
       console.log(
         `${props.userChoice} is certainly lower than ${currentGuess}`
@@ -66,14 +72,8 @@ const GameScreen = (props) => {
       currentGuess
     );
     setCurrentGuess(nextNumber);
+    setRounds(rounds => rounds + 1);
   };
-
-
-  useEffect(()=>{
-    if(currentGuess === props.userChoice){
-        console.log('You WON!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    }
-  },[])
 
   return (
     <View style={styles.screen}>

@@ -7,6 +7,7 @@ export default function SelectedNumberCard(props) {
 
     const startGameHandler = ()=>{
         props.onPressStartBtn()
+        
     }
   return (
     <Card style={styles.cardInput}>
