@@ -13,7 +13,7 @@ import Input from "../components/Input";
 import SelectedNumberCard from "../components/SelectedNumberCard";
 import Colors from "../constants/colors";
 
-function StartGameScreen() {
+function StartGameScreen(props) {
   const [guessNumber, setGuessNumber] = useState("");
   const [confirm, setConfirm] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState("");
@@ -43,9 +43,13 @@ function StartGameScreen() {
     // Keyboard.dismiss()
   };
 
+  const passSelectedNumberToApp = ()=>{
+    props.onStartGame(selectedNumber)
+  }
+
   let confirmOuput;
   if (confirm) {
-    confirmOuput = <SelectedNumberCard selectedNumber={selectedNumber} />;
+    confirmOuput = <SelectedNumberCard onPressStartBtn={passSelectedNumberToApp} selectedNumber={selectedNumber} />;
   }
 
   return (

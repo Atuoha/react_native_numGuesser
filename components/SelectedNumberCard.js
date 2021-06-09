@@ -4,6 +4,10 @@ import Card from "./Card";
 import Colors from "../constants/colors";
 
 export default function SelectedNumberCard(props) {
+
+    const startGameHandler = ()=>{
+        props.onPressStartBtn()
+    }
   return (
     <Card style={styles.cardInput}>
       <Text style={{ fontSize: 20 }}>Chosen Number</Text>
@@ -12,7 +16,7 @@ export default function SelectedNumberCard(props) {
           {props.selectedNumber}
         </Text>
       </View>
-      <Button title="Start Game Now" color={Colors.accent} />
+      <Button title="Start Game Now" onPress={startGameHandler} color={Colors.accent} />
     </Card>
   );
 }

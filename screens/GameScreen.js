@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import { Text, View, StyleSheet, Button, Alert } from "react-native";
 import Card from "../components/Card";
 import Colors from "../constants/colors";
 
 const generateRandomNumber = (min, max, exclude) => {
-  min = Math.ceil();
-  max = Math.floor();
-  let rndNumber = Math.floor(Math.random() * (max * min)) + min;
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  let rndNumber = Math.floor(Math.random() * (max - min)) + min;
   if (rndNumber === exclude) {
     return generateRandomNumber(min, max, exclude);
   } else {
@@ -19,21 +19,84 @@ const GameScreen = (props) => {
     generateRandomNumber(1, 100, props.userChoice)
   );
 
-  const lowerBtnHandler = () => {};
+  const currentLow = useRef(1);
+  const currentHigh = useRef(100);
 
-  const greaterBtnHandler = () => {};
+  const startOver = () => {
+    props.onGameOver();
+  };
+
+  const nextGuessHandler = (direction) => {
+    if (direction === "lower" && props.userChoice > currentGuess) {
+      Alert.alert(
+        {
+          title: "Opps!",
+          message: `${props.userChoice} is certainly greater than ${currentGuess}`,
+        },
+        [{ title: "Retry", style: "cancel" }]
+      );
+      console.log(
+        `${props.userChoice} is certainly greater than ${currentGuess}`
+      );
+
+      return;
+    } else if (direction === "greater" && props.userChoice < currentGuess) {
+      Alert.alert(
+        {
+          title: "Opps!",
+          message: `${props.userChoice} is certainly lower than ${currentGuess}`,
+        },
+        [{ title: "Retry", style: "cancel" }]
+      );
+      console.log(
+        `${props.userChoice} is certainly lower than ${currentGuess}`
+      );
+      return;
+    }
+
+    if (direction === "lower") {
+      currentHigh.current = currentGuess;
+    } else {
+      currentLow.current = currentGuess;
+    }
+
+    const nextNumber = generateRandomNumber(
+      currentLow.current,
+      currentHigh.current,
+      currentGuess
+    );
+    setCurrentGuess(nextNumber);
+  };
+
+
+  useEffect(()=>{
+    if(currentGuess === props.userChoice){
+        console.log('You WON!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    }
+  },[])
 
   return (
     <View style={styles.screen}>
-      <Text>Opponent's Choice</Text>
+      <Text style={{ textAlign: "center", fontSize: 15 }}>
+        Opponent's Choice
+      </Text>
       <Text style={styles.currentGuessText}>{currentGuess}</Text>
       <Card style={styles.card}>
-        <Button title="Lower" color={Colors.accent} onPress={lowerBtnHandler} />
-        <Button
-          title="Greater"
-          color={Colors.primary}
-          onPress={greaterBtnHandler}
-        />
+        <View style={styles.btnView}>
+          <Button
+            title="Lower"
+            color={Colors.accent}
+            onPress={nextGuessHandler.bind(this, "lower")}
+          />
+        </View>
+
+        <View style={styles.btnView}>
+          <Button
+            title="Greater"
+            color={Colors.primary}
+            onPress={nextGuessHandler.bind(this, "greater")}
+          />
+        </View>
       </Card>
     </View>
   );
@@ -43,6 +106,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 10,
+    alignItems: "center",
   },
 
   currentGuessText: {
@@ -51,6 +115,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: Colors.accent,
     marginVertical: 10,
+    alignItems: "center",
+    maxWidth: 100,
+    fontSize: 35,
   },
 
   card: {
@@ -66,8 +133,12 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
+  },
+
+  btnView: {
+    width: "40%",
   },
 });
 
