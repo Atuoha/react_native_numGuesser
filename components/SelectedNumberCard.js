@@ -7,11 +7,11 @@ export default function SelectedNumberCard(props) {
 
     const startGameHandler = ()=>{
         props.onPressStartBtn()
-        
+
     }
   return (
     <Card style={styles.cardInput}>
-      <Text style={{ fontSize: 20 }}>Chosen Number</Text>
+      <Text style={{ fontSize: 20 }}>You Selected</Text>
       <View style={styles.selectedNumberView}>
         <Text style={{ fontSize: 35, color: Colors.accent }}>
           {props.selectedNumber}

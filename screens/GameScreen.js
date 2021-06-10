@@ -24,7 +24,7 @@ const GameScreen = (props) => {
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
 
-  const { userChoice, onGameOver } = props // object destructuring
+  const { userChoice, onGameOver } = props; // object destructuring
   useEffect(() => {
     if (currentGuess === userChoice) {
       //    Alert.alert({title: 'Game Over!', message: 'The game is over'}, [{title: 'Game Over', style: 'click'}])
@@ -72,7 +72,7 @@ const GameScreen = (props) => {
       currentGuess
     );
     setCurrentGuess(nextNumber);
-    setRounds(rounds => rounds + 1);
+    setRounds((rounds) => rounds + 1);
   };
 
   return (

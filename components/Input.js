@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: "30%",
     textAlign: "center",
+    // fontFamily: 'open-sans-reg'
   },
 });
 
