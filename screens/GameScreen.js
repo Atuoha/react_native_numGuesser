@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Text, View, StyleSheet, Button, Alert } from "react-native";
+import { Text, View, StyleSheet, ScrollView, Alert } from "react-native";
 import Card from "../components/Card";
 import Colors from "../constants/colors";
+import MainButton from "../components/MainButton";
+import { Ionicons } from "@expo/vector-icons";
 
 const generateRandomNumber = (min, max, exclude) => {
   min = Math.ceil(min);
@@ -14,21 +16,27 @@ const generateRandomNumber = (min, max, exclude) => {
   }
 };
 
-const GameScreen = (props) => {
-  const [currentGuess, setCurrentGuess] = useState(
-    generateRandomNumber(1, 100, props.userChoice)
+const renderList = (value, index) => {
+  return (
+    <View key={value} style={styles.renderList}>
+      <Text>#{index}</Text>
+      <Text>{value}</Text>
+    </View>
   );
+};
 
-  const [rounds, setRounds] = useState(0);
+const GameScreen = (props) => {
+  const initialGuess = generateRandomNumber(1, 100, props.userChoice);
+  const [currentGuess, setCurrentGuess] = useState(initialGuess);
 
+  const [passGuesses, setPassGuesses] = useState([initialGuess]);
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
 
   const { userChoice, onGameOver } = props; // object destructuring
   useEffect(() => {
     if (currentGuess === userChoice) {
-      //    Alert.alert({title: 'Game Over!', message: 'The game is over'}, [{title: 'Game Over', style: 'click'}])
-      onGameOver(rounds);
+      onGameOver(passGuesses.length);
     }
   }, [currentGuess, userChoice, onGameOver]);
 
@@ -63,7 +71,7 @@ const GameScreen = (props) => {
     if (direction === "lower") {
       currentHigh.current = currentGuess;
     } else {
-      currentLow.current = currentGuess;
+      currentLow.current = currentGuess + 1;
     }
 
     const nextNumber = generateRandomNumber(
@@ -72,32 +80,38 @@ const GameScreen = (props) => {
       currentGuess
     );
     setCurrentGuess(nextNumber);
-    setRounds((rounds) => rounds + 1);
+    // setRounds((rounds) => rounds + 1);
+    setPassGuesses((curPassGuesses) => [nextNumber, ...curPassGuesses]);
   };
 
   return (
     <View style={styles.screen}>
-      <Text style={{ textAlign: "center", fontSize: 15 }}>
-        Opponent's Choice
-      </Text>
+      <Text style={styles.choiceText}>Computer's Guess</Text>
       <Text style={styles.currentGuessText}>{currentGuess}</Text>
       <Card style={styles.card}>
         <View style={styles.btnView}>
-          <Button
-            title="Lower"
+          <MainButton
             color={Colors.accent}
-            onPress={nextGuessHandler.bind(this, "lower")}
-          />
+            onPress={nextGuessHandler.bind(this, "lower")}>
+            <Ionicons name="md-remove" size={27} color="white" />
+          </MainButton>
         </View>
 
         <View style={styles.btnView}>
-          <Button
-            title="Greater"
+          <MainButton
             color={Colors.primary}
-            onPress={nextGuessHandler.bind(this, "greater")}
-          />
+            onPress={nextGuessHandler.bind(this, "greater")}>
+            <Ionicons name="md-add" size={27} color="white" />
+          </MainButton>
         </View>
       </Card>
+
+      <View style={styles.listView}>
+        <Text style={{textAlign: 'center', marginTop: 5}}>Guesses</Text>
+        <ScrollView contentContainerStyle={styles.list}>
+          {passGuesses.map((guess, index) => renderList(guess, passGuesses.length - index))}
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -107,6 +121,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     alignItems: "center",
+  },
+
+  choiceText: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+    fontFamily: "open-sans-bold",
   },
 
   currentGuessText: {
@@ -139,6 +160,26 @@ const styles = StyleSheet.create({
 
   btnView: {
     width: "40%",
+  },
+
+  renderList: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    marginVertical: 5,
+    borderColor: "#ccc",
+    borderWidth: 1,
+  },
+
+  listView: {
+    flex: 1,
+    width: "60%",
+  },
+
+  list:{
+    flexGrow: 1,
+    justifyContent: 'flex-end'
   },
 });
 

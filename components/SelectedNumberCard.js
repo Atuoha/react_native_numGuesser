@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import Card from "./Card";
 import Colors from "../constants/colors";
+import MainButton from './MainButton';
+import default_styles from '../constants/default-styles'
 
 export default function SelectedNumberCard(props) {
 
@@ -11,13 +13,13 @@ export default function SelectedNumberCard(props) {
     }
   return (
     <Card style={styles.cardInput}>
-      <Text style={{ fontSize: 20 }}>You Selected</Text>
+      <Text style={default_styles.light}>You Selected</Text>
       <View style={styles.selectedNumberView}>
         <Text style={{ fontSize: 35, color: Colors.accent }}>
           {props.selectedNumber}
         </Text>
       </View>
-      <Button title="Start Game Now" onPress={startGameHandler} color={Colors.accent} />
+      <MainButton onPress={startGameHandler}>START GAME </MainButton>
     </Card>
   );
 }

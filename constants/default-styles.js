@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-  fontLight: {
+  light: {
     fontFamily: "open-sans-reg",
+    fontSize: 20
   },
 
-  fontBold: {
+  bold: {
     fontFamily: "open-sans-bold",
     fontSize: 20
   },

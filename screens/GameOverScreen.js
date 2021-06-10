@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, Button } from "react-native";
 import Card from "../components/Card";
 import Colors from "../constants/colors";
 import Default_styles from "../constants/default-styles";
+import MainButton from "../components/MainButton";
 
 export default function GameOverScreen(props) {
   return (
@@ -19,11 +20,7 @@ export default function GameOverScreen(props) {
         <Text style={{ fontSize: 20 }}>Number of Rounds: <Text style={{fontWeight: 'bold'}}>{props.rounds}</Text></Text>
         <Text style={styles.number}>{props.userNumber}</Text>
 
-        <Button
-          color={Colors.accent}
-          title="New GAME"
-          onPress={props.newGame}
-        />
+        <MainButton onPress={props.newGame}>NEW GAME</MainButton>
       </Card>
     </View>
   );

@@ -61,7 +61,7 @@ export default function App() {
 
   return (
     <View style={styles.screen}>
-      <Header title={"Guess a Number"} />
+      <Header title={"Guess a Number 🎮"} />
       {content}
     </View>
   );
