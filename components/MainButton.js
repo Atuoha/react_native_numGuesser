@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, Dimensions} from 'react-native'
 import Colors from '../constants/colors'
 
 export default function MainButton(props) {
@@ -16,7 +16,7 @@ export default function MainButton(props) {
 const styles = StyleSheet.create({
     button:{
         backgroundColor: Colors.accent,
-        paddingVertical: 12,
+        paddingVertical: Dimensions.get('window').width > 350 ? 12 : 9,
         paddingHorizontal: 10,
         borderRadius: 25,
         textAlign: 'center',
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 
     buttonText:{
         color: 'white',
-        fontSize: 18,
+        fontSize: Dimensions.get('window').width > 350 ? 18 : 15,
         fontFamily: 'open-sans-reg'
     }
 })

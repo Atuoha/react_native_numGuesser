@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -7,6 +7,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  Dimensions,
+  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import Card from "../components/Card";
 import Input from "../components/Input";
@@ -17,7 +20,20 @@ function StartGameScreen(props) {
   const [guessNumber, setGuessNumber] = useState("");
   const [confirm, setConfirm] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState("");
+  const [buttonWidth, setButtonWidth] = useState(
+    Dimensions.get("window").width / 4
+  );
 
+  useEffect(() => {
+    const updateLayout = () => {
+      setButtonWidth(Dimensions.get("window").width / 4);
+    };
+    Dimensions.addEventListener("change", updateLayout);
+    return () => {
+      Dimensions.removeEventListener("change", updateLayout);
+    };
+  }, []);
+  
   const setGuessInput = (input) => {
     let formattedInput = input.target.value.replace(/[^0-9]/g, "");
     setGuessNumber(formattedInput);
@@ -43,51 +59,60 @@ function StartGameScreen(props) {
     // Keyboard.dismiss()
   };
 
-  const passSelectedNumberToApp = ()=>{
-    props.onStartGame(selectedNumber)
-  }
+  const passSelectedNumberToApp = () => {
+    props.onStartGame(selectedNumber);
+  };
 
   let confirmOuput;
   if (confirm) {
-    confirmOuput = <SelectedNumberCard onPressStartBtn={passSelectedNumberToApp} selectedNumber={selectedNumber} />;
+    confirmOuput = (
+      <SelectedNumberCard
+        onPressStartBtn={passSelectedNumberToApp}
+        selectedNumber={selectedNumber}
+      />
+    );
   }
 
   return (
-    <TouchableWithoutFeedback
-    // onPress={() => Keyboard.dismiss()}
-    >
-      <View style={styles.screen}>
-        <Text style={styles.startText}>Start a new game!</Text>
+    <ScrollView>
+      <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={30}>
+        <TouchableWithoutFeedback
+        // onPress={() => Keyboard.dismiss()}
+        >
+          <View style={styles.screen}>
+            <Text style={styles.startText}>Start a new game!</Text>
 
-        <Card style={styles.card}>
-          <Input
-            keyboardType="number-pad"
-            maxLength={2}
-            onChange={(e) => setGuessInput(e)}
-            value={guessNumber}
-            blurOnSubmit
-          />
-          <View style={styles.btnView}>
-            <View style={styles.btn}>
-              <Button
-                title="Reset"
-                onPress={resetGuessHandler}
-                color={Colors.accent}
+            <Card style={styles.card}>
+              <Input
+                keyboardType="number-pad"
+                maxLength={2}
+                onChange={(e) => setGuessInput(e)}
+                value={guessNumber}
+                blurOnSubmit
               />
-            </View>
+              <View style={styles.btnView}>
+                <View style={{ width: buttonWidth }}>
+                  <Button
+                    title="Reset"
+                    onPress={resetGuessHandler}
+                    color={Colors.accent}
+                  />
+                </View>
 
-            <View style={styles.btn}>
-              <Button
-                title="Confirm"
-                onPress={submitGuessHandler}
-                color={Colors.primary}
-              />
-            </View>
+                <View style={{ width: buttonWidth }}>
+                  <Button
+                    title="Confirm"
+                    onPress={submitGuessHandler}
+                    color={Colors.primary}
+                  />
+                </View>
+              </View>
+            </Card>
+            {confirmOuput}
           </View>
-        </Card>
-        {confirmOuput}
-      </View>
-    </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 
@@ -115,12 +140,12 @@ const styles = StyleSheet.create({
   startText: {
     fontSize: 20,
     marginVertical: 10,
-    fontFamily: 'open-sans-bold'
+    fontFamily: "open-sans-bold",
   },
 
   inputView: {
-    width: 300,
-    maxWidth: "80%",
+    width: "*0%",
+    minWidth: 300,
     alignItems: "center",
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
@@ -140,9 +165,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  btn: {
-    width: "40%",
-  },
+  //   btn: {
+  //       width: Dimensions.get('window').width / 4
+  //     // width: "40%",
+  //   },
 });
 
 export default StartGameScreen;

@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, Button } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+} from "react-native";
 import Card from "../components/Card";
 import Colors from "../constants/colors";
 import Default_styles from "../constants/default-styles";
@@ -7,22 +14,27 @@ import MainButton from "../components/MainButton";
 
 export default function GameOverScreen(props) {
   return (
-    <View style={styles.screen}>
-      <Card style={styles.card}>
-        <View style={styles.imageView}>
-          <Image
-            source={require("../assets/success.png")}
-            style={styles.image}
-            resizeMode="cover"
-          />
-        </View>
-        <Text style={Default_styles.bold}>Game Over!</Text>
-        <Text style={{ fontSize: 20 }}>Number of Rounds: <Text style={{fontWeight: 'bold'}}>{props.rounds}</Text></Text>
-        <Text style={styles.number}>{props.userNumber}</Text>
+    <ScrollView>
+      <View style={styles.screen}>
+        <Card style={styles.card}>
+          <View style={styles.imageView}>
+            <Image
+              source={require("../assets/success.png")}
+              style={styles.image}
+              resizeMode="cover"
+            />
+          </View>
+          <Text style={Default_styles.bold}>Game Over!</Text>
+          <Text style={{ fontSize: 20 }}>
+            Number of Rounds:{" "}
+            <Text style={{ fontWeight: "bold" }}>{props.rounds}</Text>
+          </Text>
+          <Text style={styles.number}>{props.userNumber}</Text>
 
-        <MainButton onPress={props.newGame}>NEW GAME</MainButton>
-      </Card>
-    </View>
+          <MainButton onPress={props.newGame}>NEW GAME</MainButton>
+        </Card>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -43,7 +55,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     alignItems: "center",
     maxWidth: 100,
-    fontSize: 35,
+    fontSize: Dimensions.get("window").width > 350 ? 35 : 20,
   },
 
   card: {
@@ -53,17 +65,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     backgroundColor: "white",
     elevation: 5,
-    padding: 20,
+    padding: Dimensions.get("window").height > 400 ? 20 : 10,
     borderRadius: 10,
-    width: 300,
-    maxWidth: "80%",
+    width: "80%",
+    minWidth: 300,
     alignItems: "center",
   },
   imageView: {
-    borderRadius: 100,
+    borderRadius: (Dimensions.get("window").width * 0.7) / 2,
     borderWidth: 3,
-    width: 200,
-    height: 200,
+    width: Dimensions.get("window").width * 0.7,
+    height: Dimensions.get("window").width * 0.7,
     borderColor: "black",
     overflow: "hidden",
     marginVertical: 5,
