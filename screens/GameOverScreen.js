@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,37 @@ import Default_styles from "../constants/default-styles";
 import MainButton from "../components/MainButton";
 
 export default function GameOverScreen(props) {
+  const [availableDeviceWidth, setAvailableDeviceWidth] = useState(
+    Dimensions.get("window").width
+  );
+
+  useEffect(() => {
+    updateLayout = () => {
+      setAvailableDeviceWidth(Dimensions.get("window").width);
+    };
+    Dimensions.addEventListener("change", updateLayout);
+    return () => {
+      Dimensions.removeEventListener("change", updateLayout);
+    };
+  });
+
+  if (availableDeviceWidth > 350) {
+    return (
+      <View style={styles.screen}>
+        <Card style={styles.card}>
+          <Text style={Default_styles.bold}>Game Over!</Text>
+          <Text style={{ fontSize: 20 }}>
+            Number of Rounds:{" "}
+            <Text style={{ fontWeight: "bold" }}>{props.rounds}</Text>
+          </Text>
+          <Text style={styles.number}>{props.userNumber}</Text>
+
+          <MainButton onPress={props.newGame}>NEW GAME</MainButton>
+        </Card>
+      </View>
+    );
+  }
+
   return (
     <ScrollView>
       <View style={styles.screen}>
