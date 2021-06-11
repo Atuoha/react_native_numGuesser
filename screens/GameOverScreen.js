@@ -18,7 +18,7 @@ export default function GameOverScreen(props) {
   );
 
   useEffect(() => {
-    updateLayout = () => {
+    const updateLayout = () => {
       setAvailableDeviceWidth(Dimensions.get("window").width);
     };
     Dimensions.addEventListener("change", updateLayout);
@@ -27,7 +27,7 @@ export default function GameOverScreen(props) {
     };
   });
 
-  if (availableDeviceWidth > 350) {
+  if (availableDeviceWidth < 350) {
     return (
       <View style={styles.screen}>
         <Card style={styles.card}>
