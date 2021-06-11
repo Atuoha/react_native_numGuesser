@@ -45,7 +45,6 @@ export default function GameOverScreen(props) {
   }
 
   return (
-    <ScrollView>
       <View style={styles.screen}>
         <Card style={styles.card}>
           <View style={styles.imageView}>
@@ -65,7 +64,6 @@ export default function GameOverScreen(props) {
           <MainButton onPress={props.newGame}>NEW GAME</MainButton>
         </Card>
       </View>
-    </ScrollView>
   );
 }
 
@@ -103,10 +101,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imageView: {
-    borderRadius: (Dimensions.get("window").width * 0.7) / 2,
+    borderRadius: 150,
     borderWidth: 3,
-    width: Dimensions.get("window").width * 0.7,
-    height: Dimensions.get("window").width * 0.7,
+    width: 300,
+    height:300,
     borderColor: "black",
     overflow: "hidden",
     marginVertical: 5,

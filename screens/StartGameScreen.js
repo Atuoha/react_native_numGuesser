@@ -33,7 +33,7 @@ function StartGameScreen(props) {
       Dimensions.removeEventListener("change", updateLayout);
     };
   }, []);
-  
+
   const setGuessInput = (input) => {
     let formattedInput = input.target.value.replace(/[^0-9]/g, "");
     setGuessNumber(formattedInput);
@@ -132,8 +132,8 @@ const styles = StyleSheet.create({
     elevation: 5,
     padding: 20,
     borderRadius: 10,
-    width: 300,
-    maxWidth: "80%",
+    width: '80%',
+    minWidth: 300,
     alignItems: "center",
   },
 
